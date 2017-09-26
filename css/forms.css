@@ -1,0 +1,102 @@
+.loadLastFile .content-boxupload-box{
+    display: inline-flex !important;
+}
+
+#loadFile{
+    width: 180px !important;
+}
+ #billMonth{
+    margin-left: 15px !important;
+}
+
+#loadFile{
+    margin-right: 15px !important;
+}
+
+.tableContainer{
+    width: 100%;
+    overflow-x: auto;
+    margin: 15px 0px 15px 15px;
+}
+.tableContainer table{
+    width: 100%;
+}
+.tableContainer table, th, td {
+    border: 1px solid black;
+ }
+ .tableContainer tr:first-child{
+     background-color: #2c3742 !important;
+     color: #fff;
+     text-align: center;
+     text-transform: uppercase;
+}
+.tableContainer tr:nth-child(even) {
+    background-color: #c6c6c6
+}
+.tableContainer tr:nth-child(odd) {
+    background-color: #e6e6e6
+}
+
+.eachTable{
+    margin-bottom: 15px;
+    font-weight: bolder;
+    text-transform: uppercase;
+}
+
+.tableCenterElement{
+    text-align: center;
+}
+
+.tableBackgroundBlue{
+    background: #BED1F7;
+}
+
+.eachTable td{
+    padding: 5px;
+}
+
+.eachTable span{
+ color: #5F5FFC;
+}
+
+.eachTable p{
+    text-align: left;
+}
+
+#tableOne{
+    width: 100%;
+}
+
+#tableOne td{
+    border: 1px solid #5050ff;
+}
+
+#tableOne .customBorder{
+    border: none;
+    border-right: 1px solid #5050ff;
+}
+
+#tableOne .customBorderNone{
+    border: none;
+}
+
+#tableTwo{
+    width: 100%;
+    text-align: center;
+}
+
+#tableTwo td{
+    width: 50%;
+    border: 1px solid #5050ff;
+}
+
+#tableThree{
+    width: 100%;
+    text-align: center;
+    margin-top: 41px;
+}
+
+#tableThree td{
+    width: 50%;
+    border: 1px solid #5050ff;
+}
