@@ -9,7 +9,7 @@ require_once 'php/PHPExcel/Classes/PHPExcel/IOFactory.php';
 include 'php/database/functions/select.php';
 include 'php/database/functions/update.php';
 
-//init page
+/***********************init page***********************/
 session_start();
 if (!isset($_SESSION["selected"])) {
     header('Location: index.php');
@@ -18,6 +18,7 @@ if (!isset($_SESSION["selected"])) {
 $objExcel = loadExcel();
 $finalTable = "";
 $billClass = "hidden";
+
 if ($objExcel == null) {
     header('Location: index.php');
     exit;
@@ -29,6 +30,43 @@ if ($path == null) {
     errorAlert();
 } else {
     $finalTable = drawTable($path);
+}
+
+/***********************end init page***********************/
+
+//show specific file or bill specific month
+if (isset($_POST['billMonth']) != "") {
+
+        $result = billMonth();
+    if ($result) {
+        //$result = disableBill();
+        if ($result) {
+            successAlert("Se facturó correctamente");
+        } else {
+            errorAlert();
+        }
+    } else {
+        errorAlert();
+    }
+
+} elseif (isset($_POST['loadFile'])) {
+    $dateValue = $_POST['loadFile'];
+    
+    if ($dateValue == "") {
+        loadExcel();
+    } else {
+        $dateValue = explode("-", $dateValue);
+        $objExcel = loadExcelByDate($dateValue[0], $dateValue[1], $_SESSION['selected']);
+        if ($objExcel == null) {
+            warningAlert("No hay datos");
+            $finalTable = "";
+            $billStatus = 1;
+        } else {
+            $finalTable = "";
+            $finalTable = drawTable($objExcel->unidadId . "\\" . $objExcel->filePath);
+            $billStatus = $objExcel->billStatus;
+        }
+    }
 }
 
 ?>
@@ -96,7 +134,7 @@ if ($path == null) {
                     <div class="panel-heading">
                         <div class="panel-title">Archivo </div>
                           <div class="panel-options">
-                                <span>Carga de archivo de base de datos por mes y año <i class="glyphicon glyphicon-info-sign"></i></span>
+                                <span>Busqueda de archivo en base de datos por mes y año <i class="glyphicon glyphicon-info-sign"></i></span>
                         </div>
                         <div class="uploadExcelFields panel-body">
                         <form class="loadLastFile" name="loadLastFile" action="forms.php" method="post" enctype="multipart/form-data">
@@ -104,10 +142,11 @@ if ($path == null) {
                             <!--<input type="file"  class="displayBlock btn btn-default" />-->
                             <!--div name="loadFile" id="loadFile" class="displayBlock bfh-datepicker" data-format="y-m-d" data-date=""></div>-->
                             <input type="date" name="loadFile" id="loadFile" value="Buscar" class="displayBlock btn btn-default"/>
-                            <input type="submit" name="loadfileButton" id="loadfileButton" value="Buscar" class="displayBlock btn btn-default"/>
-                            <?php if ($billStatus == 0) {
+                            <input formaction="forms.php" type="submit" name="loadfileButton" id="loadfileButton" value="Buscar" class="displayBlock btn btn-default"/>
+                            <?php
+                            if ($billStatus == 0) {
                                 echo "<input type='submit' name='billMonth' id='billMonth' value='Facturar' class='pull-right btn btn-default'/>";
-}
+                            }
                             ?>
                             </div>
                         </div>
@@ -167,42 +206,3 @@ if ($path == null) {
     <script src="js/forms.js"></script>
   </body>
 </html>
-
-<?php
-
-//show specific file
-if (isset($_POST['loadFile'])) {
-    $dateValue = $_POST['loadFile'];
-
-    if ($dateValue == "") {
-        loadExcel();
-    } else {
-        $dateValue = explode("-", $dateValue);
-        $objExcel = loadExcelByDate($dateValue[0], $dateValue[1], $_SESSION['selected']);
-        if ($objExcel == null) {
-            warningAlert("No hay datos");
-            $finalTable = "";
-            $billStatus = 1;
-        } else {
-            $finalTable = "";
-            $finalTable = drawTable($objExcel->unidadId . "\\" . $objExcel->filePath);
-            $billStatus = $objExcel->billStatus;
-        }
-    }
-}
-
-//bill month
-if (isset($_POST['billMonth'])) {
-    $result = '<div class="container">' . billMonth() . '</div>';
-    if ($result) {
-        $result = disableBill();
-        if ($result) {
-            //successAlert("Se facturó correctamente");
-        } else {
-            errorAlert();
-        }
-    } else {
-        errorAlert();
-    }
-}
-?>

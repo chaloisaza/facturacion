@@ -1,77 +1,60 @@
 <?php
 function billMonth()
 {
-    //load last two files
-    $objExcels = loadLastTwoExcels();
-    $Array = array();
-    foreach ($objExcels as $excel => $value) {
-        //read file and return values as two dimension array
-        array_push($Array, calculateBill($value));
-        sort($Array);
-    }
+    //load last file
+    $objExcel = loadExcel();
 
+    //create html bils
+    $bills = createBills($objExcel);
 
-
-    foreach ($Array as $array => $value) {
-        $billFormats = buildBill($value);
-    }
-
-    return $billFormats;
-    //calculateBill
-    //$ultimate = calculateBill($objExcel->filePath);
-    //$penultimate = calculateBill($objExcel->filePath);
-
-    /*$total = calcularTotal();
-    $interesPendiente = calcularInteresPendiente();
-    $valorPendiente = calcularValorPendiente();
-    $administracionApagar = calcularAdministracionApagar();
-    $interesApagarPorMora = calcularInteresApagarPorMora();
-    $administracionPendiente = calcularAdministracionPendiente();
-    $totalIntereses = calcularTotalIntereses();
-    $otrosConceptos = calcularOtrosConceptos();*/
-
+    //create PDF
+    $pdfBill = createPDF($bills);
+   
 }
 
-
-function calculateBill($path)
+function createBills($objExcel)
 {
-    $inputFileName = 'uploads//' . $path;
-    $serverPath = getcwd();
-    $fullFilePath = $serverPath . $inputFileName;
+    //init vars
+    $excelObject = "";
+    $excelObjectArray = array();
 
-    $excelReader = PHPExcel_IOFactory::createReaderForFile($inputFileName);
-    $excelObj = $excelReader->load($inputFileName);
-    $worksheet = $excelObj->getActiveSheet();
-    $lastRow = $worksheet->getHighestRow();
-    $row = 1;
-    $lastColumn = $worksheet->getHighestColumn();
-    $lastColumn++;
-
-
-    $parentArray = array();
+    $inputFileName = 'uploads//' . $objExcel->unidadId . "//" . $objExcel->filePath ;
+    
+        //open excel file
+        $excelReader = PHPExcel_IOFactory::createReaderForFile($inputFileName);
+        $excelObj = $excelReader->load($inputFileName);
+        $worksheet = $excelObj->getActiveSheet();
+        $lastRow = $worksheet->getHighestRow();
+        $row = 1;
+        $lastColumn = $worksheet->getHighestColumn();
+        $lastColumn++;
+    
+    
     for ($row = 1; $row <= $lastRow; $row++) {
-        if ($row > 1) {
-            $chidlArray = array();
-        }
-        else {
-            $fieldsArra = array();
-        }
-
+        $table .= "<table class='tableDecoration'><tr>";
         for ($column = 'A'; $column != $lastColumn; $column++) {
             $cell = $worksheet->getCell($column . $row);
-            if ($row > 1) {
-                array_push($chidlArray, $cell->getValue() != null ? $cell->getValue() : "");
+            if ($cell->getDataType() == "n" && $column != "A" && $column != "D" && $column != "F" && $column != "T") {
+                $table .= "<td style='text-align: center !important;font-size: 11px !important;'>";
+                $table .= formatcurrency($cell->getValue(), "COP");
+            } elseif ($cell->getDataType() == "n" && ($column == "F" || $column == "T")) {
+                $table .= "<td style='font-weight: bolder !important;font-size: 12px !important;text-align: center !important;'>";
+                $table .= formatcurrency($cell->getValue(), "COP");
+            } else {
+                $table .= "<td>";
+                $table .= $cell->getValue();
             }
-            else {
-                array_push($fieldsArra, $cell->getValue());
-            }
-
+            $table .= "</td>";
         }
-        if ($row > 1) {
-            $resultMerge = array_combine($fieldsArra, $chidlArray);
-            array_push($parentArray, $resultMerge);
-            unset($chidlArray);
-        }
+        $table .= "</tr></table>";
+        array_push($tableArray, $table);
+        $table = "";
     }
-    return $parentArray;
+        echo $tableArray;
+        return $tableArray;
 }
+
+
+function createPDF($bills){
+
+} 
