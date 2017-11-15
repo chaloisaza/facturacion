@@ -2,7 +2,7 @@
 
 	$hostname = "localhost";
 	$username = "root";
-	$password = "";
+	$password = "Colusa0000!";
 	$database = "test";
 
 

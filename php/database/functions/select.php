@@ -1,5 +1,5 @@
 <?php
-include "connection.php";
+require_once "connection.php";
 function loadExcel()
 {
     $connection = connectionDB();
@@ -56,6 +56,23 @@ function loadUnidades()
     }
 
     if (count($obj) == 1) {
+        return null;
+    } else {
+        return $obj;
+    }
+}
+
+function loadUnidadById($id){
+    $connection = connectionDB();
+    $sql = "SELECT * FROM unidad WHERE id = $id AND status = 'AC'";
+    $result = $connection->query($sql);
+    $obj = $result->fetch_object();
+
+    while ($entry = $result->fetch_object()) {
+        $obj[] = $entry;
+    }
+
+    if (!$obj) {
         return null;
     } else {
         return $obj;

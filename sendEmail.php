@@ -6,17 +6,22 @@ function sendEmail($data)
 {
     $mail = new PHPMailer;
     $mail->IsSMTP();
-    $mail->Host = 'smtp.gmail.com';
-    $mail->Port = 587;
-    $mail->SMTPSecure = 'tls';
+    $mail->Host = 'mail.ebfactory.com';
+    //Enable SMTP debugging
+    // 0 = off (for production use)
+    // 1 = client messages
+    // 2 = client and server messages
+    $mail->SMTPDebug = 4;
+    $mail->Port = 25;
+    $mail->SMTPSecure = 'none';
     $mail->SMTPAuth = true;
-    $mail->Username = "chaloisaza@gmail.com"; 
-    $mail->Password = "*3579510chalo!?*";
+    $mail->Username = "jisaza@ebfactory.com"; 
+    $mail->Password = "Jisaza2017";
 
     //Set who the message is to be sent from
-    $mail->setFrom('from@example.com', 'Sistema de facturacion');
+    $mail->setFrom('jisaza@ebfactory.com', 'Sistema de facturacion');
     //Set an alternative reply-to address
-    $mail->addReplyTo('replyto@example.com', 'Sistema de facturacion');
+    $mail->addReplyTo('jisaza@ebfactory.com', 'Sistema de facturacion');
 
     //Set who the message is to be sent to
     $mail->addAddress('jisaza@ebfactory.com', '');

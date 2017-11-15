@@ -7,6 +7,15 @@ body {
     padding: 0px;
 }
 
+
+#imagenUnidad{
+    width: 100px;
+    height: 100px;
+    margin-bottom: 20px;
+    margin-right: 20px;
+}
+
+
 .page-content>.row {
     margin-left: 0px !important;
     margin-right: 0px !important;
@@ -710,4 +719,19 @@ body {
         box-shadow: 0px 0px 1px #0fa6bc;
         border-radius: 10px;
     }
+}
+
+.paddingInput{
+    padding: 5px;
+}
+textarea{
+    resize: none;
+}
+
+input[type="text"]:disabled {
+    cursor: no-drop;
+}
+
+#agregarUnidadApartamento{
+    margin-bottom: 10px !important;
 }

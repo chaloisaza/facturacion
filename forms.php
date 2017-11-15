@@ -6,7 +6,6 @@ require 'alerts.php';
 require 'php/currency/format-currency.php';
 require 'php/PHPExcel/Classes/PHPExcel.php';
 require_once 'php/PHPExcel/Classes/PHPExcel/IOFactory.php';
-include 'php/database/functions/select.php';
 include 'php/database/functions/update.php';
 
 /***********************init page***********************/
@@ -37,7 +36,7 @@ if ($path == null) {
 //show specific file or bill specific month
 if (isset($_POST['billMonth']) != "") {
 
-        $result = billMonth();
+    $result = billMonth();
     if ($result) {
         //$result = disableBill();
         if ($result) {
