@@ -65,8 +65,8 @@ function buildBill($bills)
     $count = 0;
     foreach ($bills as $bill => $value) {
 
-    //if(count($value) > 0){
-    if($count == 4){
+    if(count($value) > 0){
+    //if($count == 1){
 
             $arrayCalculo = hacerCalculos($value,$unidad); 
             // add a page
@@ -226,105 +226,87 @@ function hacerCalculos($value,$unidad){
 
     $arrayCalculos = [];
     
-    //Cuota Administración
+    /* Valor Administración */
     $cuotaAdministracion = $value[4];
 
-    //Total Facturado
-    $totalFacturado = $value[5];
-
-    //Administración facturada
-    $administracionFacturada = $value[6];
-
-    //Intereses facturados
-    $interesesFacturados = $value[7];
-
-    //Otros Conceptos Facturados
-    $otrosConceptosFacturados = $value[8];
-    $otrosConceptosDesc1 = $value[15];
-    $otrosConceptosValor1 = $value[16];
-    $otrosConceptosDesc2 = $value[17];
-    $otrosConceptosValor2 = $value[18];
-
-    //Total Pagado
+    /*Valor Pagado*/
     $totalPagado = $value[9]; 
+    $totalPagadoAux = $totalPagado;
+    /* Valores Facturados */
+
+        //Total Facturado
+        $totalFacturado = $value[5];
+
+        //Administración facturada
+        $administracionFacturada = $value[6];
+    
+        //Intereses facturados
+        $interesesFacturados = $value[7];
+    
+        //Otros Conceptos Facturados
+        $otrosConceptosFacturados = $value[8] === null ||  $value[8] === "" ? "" : $value[8] ;
+        $otrosConceptosDesc1 = $value[15] === null ||  $value[15] === "" ? "" : $value[15] ;
+        $otrosConceptosValor1 = $value[16] === null ||  $value[16] === "" ? 0 : $value[16] ;
+        $otrosConceptosDesc2 = $value[17] === null ||  $value[17] === "" ? "" : $value[17] ;
+        $otrosConceptosValor2 = $value[18] === null ||  $value[18] === "" ? 0 : $value[18] ;
+        $otrosConceptosTotalesFacturados =  $otrosConceptosFacturados + $otrosConceptosValor1 + $otrosConceptosValor2;
+
+    /* Valores Facturados */
+
+    /* Valores Pendientes */
+
+        //Intereses pendiente
+        $totalPagadoAux = $totalPagadoAux == 0 ? 0 : $totalPagadoAux - $interesesFacturados;
+        $interesPendiente = $interesesFacturados == 0 ? 0 : ($totalPagadoAux - $interesesFacturados) * -1;
+
+        //Otros pendientes
+        $totalPagadoAux = $totalPagadoAux == 0 ? 0 : $totalPagadoAux - $otrosConceptosTotalesFacturados;
+        $otrosConceptosPendientes == 0 ? 0 : $otrosConceptosTotalesFacturados <=  $totalPagadoAux ? 0 : ($totalPagadoAux - $otrosConceptosTotalesFacturados) * -1;
+
+        //Administracion pendiente
+        $totalPagadoAux = $totalPagadoAux == 0 ? 0 : $totalPagadoAux - $administracionFacturada;
+        $administracionPendiente == 0 ? 0 : ($totalPagadoAux - $administracionFacturada) * -1; 
+
+
+    /* Valores Pendientes */
+
+    /* Valores Pagados */
+    
+    /* Valores Pagados */
+
+
     $totalPagadoRestado = $value[9]; 
 
     //factura anterior
     $facturaAnterior = $value[12];
-
+   
     //Saldo Pendiente
     $saldoPendiente =  $facturaAnterior <= $totalPagado ? 0 : $facturaAnterior - $totalPagado ;
 
-    //Intereses pendiente
-    $interesPendiente = 0;
-    //Intereses pagados
-    $interesPagado = 0;
-    //Interes facturado
-    $interesFacturado = 0;
-
-    if($interesesFacturados <= $totalPagado){
-        //Si totalPagado cubre intereses totalmente
-        $totalPagadoRestado = $totalPagadoRestado - $interesesFacturados;   
-        $interesPagado =  $interesesFacturados;
-    }else{
-        //si total pagado cubre parcial o no cubre intereses
-        $interesPendiente = $interesesFacturados - $totalPagado;
-        $totalPagadoRestado = 0;
-    }
-    
-    //Otros Conceptos pagados
-    $otrosConceptosPagados = 0;    
-    //Otros Conceptos pendientes
-    $otrosConceptosPendientes = 0;
-
-    if($otrosConceptosFacturados <= $totalPagadoRestado){
-        $totalPagadoRestado = $totalPagadoRestado - $otrosConceptosFacturados; 
-        $otrosConceptosPagados = $otrosConceptosFacturados;
-    }else{
-        $otrosConceptosPendientes = $otrosConceptosFacturados - $totalPagado;
-        $totalPagadoRestado = 0;   
-    }
-
-
-    //Administracion pendiente
-    $administracionPendiente = 0;
-    //Administracion pagada   
-    $administracionPagada = 0;
-
-    if($administracionFacturada <= $totalPagadoRestado){
-        $totalPagadoRestado = $totalPagadoRestado - $administracionFacturada; 
-        $administracionPagada = $administracionFacturada;
-    }else{
-        $administracionPagada = $administracionFacturada - $totalPagadoRestado;
-        $totalPagadoRestado = 0;   
-    }
-
-    $administracionFacturada = $cuotaAdministracion + $administracionPagada;
-    $interesFacturado = $administracionPagada * (intval($unidad->porcentajeInteres)/100) + $interesPendiente;
-    
-    //pagar sin otros
-    $pagarSinOtros = $administracionFacturada + $interesFacturado;
+    //nota débito
+    $notaDebito = $value[14];
+        
+    //nota crédito
+    $notaCredito = $value[13];
 
     //cuota administracion
     $cuotaAdministracion = $value[4];
 
-    //cuentas vencidas
-    //¿?
+    /***************************** Totales ******************************/
 
-    //nota débito
-    $notaDebito = $value[14];
+    
+    //$administracionPendiente = $totalFacturado - $totalPagado;
 
-    //nota crédito
-    $notaCredito = $value[13];
+    //administración facturada
+    $administracionFacturada = $cuotaAdministracion + $administracionPendiente;
+    $interesFacturado = $administracionPendiente * ((intval($unidad->porcentajeInteres))/100) + $interesPendiente;
+    $otrosConceptosFacturados = $notaDebito - $notaCredito + $otrosConceptosPendientes + $otrosConceptosValor1 + $otrosConceptosValor2;
+    
+    //pagar sin otros
+    $pagarSinOtros = $administracionFacturada + $interesFacturado;
 
-    //total a pagar
-    $totalPagar = 
-        //administracion
-        $administracionPendiente +  $cuotaAdministracion +
-        //intereses
-        $interesFacturado +
-        //otros
-         $otrosConceptosPendientes + $otrosConceptosValor1 + $otrosConceptosValor2;
+    //total a pagar  //administracion          //intereses         //otros
+    $totalPagar =  $administracionFacturada + $interesFacturado + $otrosConceptosFacturados;
 
     array_push(
         $arrayCalculos, 
