@@ -75,7 +75,7 @@ function buildBill($bills)
             $html = '
             <table style="" cellpadding="2" sytle="border-color:#2536ff">
                 <tr nobr="true">
-                    <td style="' . $fullBorder . '" rowspan="3">Imagen de la unidad1</td>
+                    <td style="' . $fullBorder . ';text-align:center" rowspan="3"><img id="imagenUnidad" style="width: 100px;height: 100px;" src="'. "unidadImages/" .  $unidad->id . ".png" .'" alt=""></td>
                     <td style="' . $dashedRightBorder . '" colspan="2"><span style="color:#2536ff" >NOMBRE:</span> ' . $value[1] . '</td>
                     <td style="' . $dashedLeftBorder . 'text-align:center;"><span style="color:#2536ff" >UNIDAD O CONJUNTO</span></td>
                 </tr>
