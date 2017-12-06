@@ -66,7 +66,7 @@ function buildBill($bills)
     foreach ($bills as $bill => $value) {
 
     if(count($value) > 0 && $value[0] != null){
-    //if($count == 6){
+    //if($count == 3 ){
 
             $arrayCalculo = hacerCalculos($value,$unidad); 
             // add a page
@@ -95,8 +95,8 @@ function buildBill($bills)
                     <td style="' . $dashedLeftBorder . 'text-align:center">' . $value[1] . '</td>
                 </tr>
                 <tr nobr="true">
-                    <td style="' . $fullBorder . 'background-color:#e5ebf7;text-align:center"><span style="color:#2536ff" >FACTURA ANTERIOR:</span> <br>$ '.formatcurrency(intval($value[12]), "COP").'</td>
-                    <td style="' . $fullBorder . 'background-color:#e5ebf7;text-align:center"><span style="color:#2536ff" >PAGO REALIZADO:</span> <br>$ ' . formatcurrency(intval($value[9]), "COP") . '</td>
+                    <td style="' . $fullBorder . 'background-color:#e5ebf7;text-align:center"><span style="color:#2536ff" >FACTURA ANTERIOR:</span> <br>$ '.formatcurrency(intval($arrayCalculo[10]), "COP").'</td>
+                    <td style="' . $fullBorder . 'background-color:#e5ebf7;text-align:center"><span style="color:#2536ff" >PAGO REALIZADO:</span> <br>$ ' . formatcurrency(intval($arrayCalculo[2]), "COP") . '</td>
                     <td style="' . $dashedRightBorder . 'text-align:center"><span style="color:#2536ff" >SALDO PENDIENTE</span><br />$ ' . formatcurrency($arrayCalculo[3], "COP") . '</td>
                     <td style="' . $dashedLeftBorder . '">
                         <table>
@@ -108,9 +108,9 @@ function buildBill($bills)
                     </td>
                 </tr>
                 <tr nobr="true">
-                    <td style="' . $fullBorder . 'text-align:center"><span style="color:#2536ff">CUOTA ADMINISTRACIÓN</span><br />$ ' . formatcurrency(intval($value[4]), "COP") . '</td>
-                    <td style="' . $fullBorder . 'text-align:center"><span style="color:#2536ff">INTERÉS DE MORA</span><br />$ ' . formatcurrency(($arrayCalculo[18]), "COP") .'</td>
-                    <td style="' . $dashedRightBorder . 'text-align:center"><span s0.tyle="color:#2536ff">PAGAR SIN OTROS</span><br />$ ' . formatcurrency(intval($arrayCalculo[6]), "COP") . '</td>
+                    <td style="' . $fullBorder . 'text-align:center"><span style="color:#2536ff">CUOTA ADMINISTRACIÓN</span><br />$ ' . formatcurrency(intval($arrayCalculo[4]), "COP") . '</td>
+                    <td style="' . $fullBorder . 'text-align:center"><span style="color:#2536ff">INTERÉS DE MORA</span><br />$ ' . formatcurrency(($arrayCalculo[16]), "COP") .'</td>
+                    <td style="' . $dashedRightBorder . 'text-align:center"><span style="color:#2536ff">PAGAR SIN OTROS</span><br />$ ' . formatcurrency(intval($arrayCalculo[5]), "COP") . '</td>
                     <td style="' . $dashedLeftBorder . '">
                         <table>
                             <tr nobr="true">
@@ -128,18 +128,18 @@ function buildBill($bills)
                     <tr nobr="true">
                     <td style="' . $fullBorder . 'text-align:left;background-color:#e5ebf7"><span style="color:#2536ff">CONCEPTO</span></td>
                     <td style="' . $fullBorder . 'text-align:rigth;background-color:#e5ebf7"><span style="color:#2536ff">VALOR</span></td>
-                    <td style="' . $dashedRightBorder . 'text-align:center">' . $arrayCalculo[19] . '</td>
+                    <td style="' . $dashedRightBorder . 'text-align:center">' . $arrayCalculo[17] . '</td>
                     <td style="' . $dashedLeftBorder . 'text-align:center">'.getActualDate().'</td>
                 </tr>
                 <tr nobr="true">
-                    <td style="' . $fullBorder . '">NOTA CRÉDITO</td>
-                    <td style="' . $fullBorder . 'text-align:rigth">$ '. formatcurrency(intval($arrayCalculo[16])* -1, "COP")  .'</td>
+                    <td style="' . $fullBorder . '">'. (intval($arrayCalculo[14]) == 0 ? '' : 'NOTA CRÉDITO')  .'</td>
+                    <td style="' . $fullBorder . 'text-align:rigth">'. (intval($arrayCalculo[14]) == 0 ? '' : '$ '.formatcurrency(intval($arrayCalculo[14])* -1, "COP"))  .'</td>
                     <td style="' . $dashedRightBorder . 'text-align:center"><span style="color:#2536ff">PÁGUESE SIN RECARGO</span></td>
                     <td style="' . $dashedLeftBorder . 'text-align:center"><span style="color:#2536ff">BANCO</span></td>
                 </tr>
                 <tr nobr="true">
-                    <td style="' . $fullBorder . '">NOTA DÉBITO</td>
-                    <td style="text' . $fullBorder . 'text-align:rigth">$ '. formatcurrency(intval($arrayCalculo[17]), "COP").'</td>
+                    <td style="' . $fullBorder . '">'. (intval($arrayCalculo[15]) == 0 ? '' : 'NOTA DÉBITO')  .'</td>
+                    <td style="text' . $fullBorder . 'text-align:rigth">'. (intval($arrayCalculo[15]) == 0 ? '' : '$ '.formatcurrency(intval($arrayCalculo[15]), "COP"))  .'</td>
                     <td style="' . $dashedRightBorder . '">
                         <table>
                             <tr nobr="true">
@@ -152,14 +152,14 @@ function buildBill($bills)
                     <td style="' . $dashedLeftBorder . 'text-align:center">' . $value[11] . '</td>
                 </tr>
                 <tr nobr="true">
-                    <td style="' . $fullBorder . '">'.$arrayCalculo[7].'</td>
-                    <td style="' . $fullBorder . 'text-align:rigth">'.formatcurrency(intval($arrayCalculo[8]), "COP").'</td>
+                    <td style="' . $fullBorder . '">'.$arrayCalculo[6].'</td>
+                    <td style="' . $fullBorder . 'text-align:rigth">'.(intval($arrayCalculo[7]) == 0 ? '' : '$ '.formatcurrency(intval($arrayCalculo[7]), "COP")).'</td>
                     <td style="' . $dashedRightBorder . 'text-align:center"><span style="color:#2536ff">PÁGUESE CON RECARGO</span></td>
                     <td style="' . $dashedLeftBorder . 'text-align:center"><span style="color:#2536ff">CUENTA RECAUDO</span></td>
                 </tr>
                 <tr nobr="true">
-                    <td style="' . $fullBorder . '">'.$arrayCalculo[9].'</td>
-                    <td style="' . $fullBorder . 'text-align:rigth">'.formatcurrency(intval($arrayCalculo[10]), "COP").'</td>
+                    <td style="' . $fullBorder . '">'.$arrayCalculo[8].'</td>
+                    <td style="' . $fullBorder . 'text-align:rigth">'.(intval($arrayCalculo[9]) == 0 ? '' : '$ '.formatcurrency(intval($arrayCalculo[9]), "COP")).'</td>
                     <td style="' . $dashedRightBorder . '">
                         <table>
                             <tr nobr="true">
@@ -173,13 +173,13 @@ function buildBill($bills)
                 </tr>
                 <tr nobr="true">
                     <td style="' . $fullBorder . 'text-align:rigth"><span style="color:#2536ff">TOTAL A PAGAR</span></td>
-                    <td style="' . $fullBorder . 'text-align:rigth;background-color:#e5ebf8">$ '. formatcurrency(intval($arrayCalculo[12]), "COP") .'</td>
+                    <td style="' . $fullBorder . 'text-align:rigth;background-color:#e5ebf8">$ '. formatcurrency(intval($arrayCalculo[0]), "COP") .'</td>
                     <td style=""></td>
                     <td style="' . $dashedLeftBorder . '">
                         <table>
                             <tr nobr="true">
                                 <td style="text-align:rigth">TOTAL A PAGAR</td>
-                                <td style="text-align:rigth;background-color:#e5ebf8">$ '. formatcurrency(intval($arrayCalculo[12]), "COP") .'</td>
+                                <td style="text-align:rigth;background-color:#e5ebf8">$ '. formatcurrency(intval($arrayCalculo[0]), "COP") .'</td>
                             </tr>
                         </table>
                     </td>
@@ -285,7 +285,7 @@ function hacerCalculos($value,$unidad){
             $otrosConceptosPagados = $otrosConceptosFacturados;
         }else{
             if($totalPagado == 0 ){
-                $otrosConceptosPendientes = $otrosConceptosFacturados;
+                $otrosConceptosPendientes = 0;
                 $totalPagado = 0;
                 $otrosConceptosPagados = 0;
             }else{
@@ -318,10 +318,14 @@ function hacerCalculos($value,$unidad){
     $totalPagadoRestado = $value[9]; 
 
     //factura anterior
-    $facturaAnterior = $value[12];
+    $facturaAnterior = $value[5];
    
     //Saldo Pendiente
-    $saldoPendiente =  $facturaAnterior <= $totalPagado ? 0 : $facturaAnterior - $totalPagado ;
+    $saldoPendiente =  $facturaAnterior <= $totalPagado ? 0 : $facturaAnterior - $totalPagadoRestado ;
+
+    if($totalPagado>0){
+        $saldoPendiente = $totalPagado * -1;
+    }
 
     //nota débito
     $notaDebito = $value[14];
@@ -342,22 +346,30 @@ function hacerCalculos($value,$unidad){
     $administracionTotal = $cuotaAdministracion + $administracionPendiente;
 
     //Intereses facturados próximo mes
-    $interesesTotal = ($administracionPendiente * ((int)$unidad->porcentajeInteres/100) ) + $interesPendiente;
+    //$interesesTotal = 0;
+    if($totalPagadoRestado == 0){
+        $interesesTotal = $administracionFacturada * ((int)$unidad->porcentajeInteres/100);
+    }else if($facturaAnterior-$totalPagadoRestado > 0){   
+        $interesesTotal = ($facturaAnterior-$totalPagadoRestado) * ((int)$unidad->porcentajeInteres/100)  ;
+    }else{
+        $interesesTotal = 0;
+    }
 
     //Otros conceptos facturados próximo mes
-    $otrosConceptosTotal = $otrosConceptosPendientes + $notaDebito - $notaCredito + $otrosConceptosTotales;
-
-    //Pagar sin otros
-    $pagarSinOtros =  $administracionTotal  + $interesesTotal;
-
+    $otrosConceptosTotal = $otrosConceptosPendientes + $notaDebito - $notaCredito;
+        
     //Total facturado próximo mes
-    $totalFacturado = $administracionTotal  + $interesesTotal + $otrosConceptosTotal;
+    $totalFacturado = $saldoPendiente + $cuotaAdministracion  + $interesesTotal + $otrosConceptosTotales + $otrosConceptosTotal;
 
     //si queda con saldo a favor
     if($facturaAnterior < 0 ){
         $totalFacturado = $facturaAnterior + $totalFacturado;
     }
 
+    $interesesFacturados = $interesesTotal;
+
+    //Pagar sin otros
+    $pagarSinOtros =  $saldoPendiente + $cuotaAdministracion  + $interesesTotal;
 
     array_push(
         $arrayCalculos, 
@@ -366,21 +378,19 @@ function hacerCalculos($value,$unidad){
         $totalPagadoRestado,  //2
         $saldoPendiente, //3
         $cuotaAdministracion, //4
-        $interesPendiente, //5
-        $pagarSinOtros, //6
-        $otrosConceptosDesc1, //7
-        $otrosConceptosValor1, //8
-        $otrosConceptosDesc2, //9
-        $otrosConceptosValor2, //10
-        $facturaAnterior, //11
-        $totalFacturado, //12
-        $administracionPendiente, //13
-        $interesPendiente, //14
-        $otrosConceptosPendientes,//15
-        $notaCredito, //16
-        $notaDebito, //17
-        $interesesFacturados, //18
-        $cuotasVencidas //19
+        $pagarSinOtros, //5
+        $otrosConceptosDesc1, //6
+        $otrosConceptosValor1, //7
+        $otrosConceptosDesc2, //8
+        $otrosConceptosValor2, //9
+        $facturaAnterior, //10
+        $administracionPendiente, //11
+        $interesPendiente, //12
+        $otrosConceptosPendientes,//13
+        $notaCredito, //14
+        $notaDebito, //15
+        $interesesFacturados, //16
+        $cuotasVencidas //17
     );
 
     return $arrayCalculos;
@@ -396,7 +406,7 @@ function getActualDate(){
 
     $meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Setiembre", "Octubre", "Noviembre", "Diciembre"]; 
     
-    return  $meses[$today['mon']] ." ".  $today['year'];
+    return  $meses[$today['mon']-1] ." ".  $today['year'];
 }
 
 
